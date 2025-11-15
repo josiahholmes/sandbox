@@ -1,14 +1,24 @@
-# Find common dictionary items
+from functools import reduce# Find common dictionary items
 
-def find_commons(data):
+
+def iterate_commons(data):
     d1 = data[0]
     commons = set(d1.items())
 
     for d in data[1:]:
         commons &= set(d.items())
+    
     commons = dict(commons)
-
     return commons
+
+
+def reduce_commons(data):
+    commons = reduce(lambda d1, d2: d1 & set(d2.items()), 
+                    data[1:], 
+                    set(data[0].items()))
+    commons = dict(commons)
+    return commons
+
 
 data = [
     {
@@ -41,5 +51,8 @@ data = [
     }
 ]
 
-commons = find_commons(data)
-print(f"Common Items: {commons}")
+iterated_commons = iterate_commons(data)
+print(f"Common Items (Iterative): {iterated_commons}")
+
+reduced_commons = reduce_commons(data)
+print(f"Common Items (Reduce): {reduced_commons}")
